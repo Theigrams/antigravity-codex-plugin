@@ -50,7 +50,7 @@ Selection rules:
 ### B. Starting a new Codex thread (or running multiple threads in parallel)
 - Call `invoke_subagent`:
   - `TypeName`: `"codex-worker"`
-  - `Model`: `"flash"`
+  - `Model`: `"flash_lite"`
   - `Role`: short descriptive label with the model so it is easy to identify in the Subagent UI, e.g. `Codex: Fix auth race (gpt-6.2-sol)`
   - `Prompt`: include `--cwd "<workspace>"`, any resolved flags (`--model`, `--effort`, `--read-only`/`--write`, `--resume <id>`, `--worktree`), and the user's task text verbatim.
 - **Parallel subagents**: When a task splits cleanly into independent pieces (e.g. investigating two modules or implementing independent parts), you may invoke **multiple `codex-worker` subagents in parallel** in the same turn — each owns its own isolated Codex thread and Subagent UI card. If concurrent workers will edit files in the same repo, consider passing `Workspace: "share"` on `invoke_subagent` or `--worktree` to avoid edit collisions.

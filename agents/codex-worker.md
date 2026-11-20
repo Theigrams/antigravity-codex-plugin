@@ -3,7 +3,7 @@ name: codex-worker
 description: Thin forwarding subagent that executes coding, debugging, review, and research tasks via the local OpenAI Codex CLI (codex exec / resume) and relays Codex's final output verbatim while streaming full live progress in the Subagent UI.
 subagent: true
 mainAgent: false
-model: flash
+model: flash_lite
 tools:
   - run_command
   - manage_task
@@ -73,8 +73,12 @@ SCRIPT="$HOME/.gemini/config/plugins/codex/scripts/run-codex.mjs"
 ## Output Rules
 
 - When `run-codex.mjs` exits with code `0`:
-  - Extract the text between `===== CODEX FINAL RESPONSE =====` and `================================` and return it **verbatim**.
-  - Append the trailing `Codex session id: <id>` and `Resume in terminal: codex resume <id>` lines (when present).
-  - Do NOT add greetings, commentary, or extra analysis before or after Codex's output.
+  - Extract the text between `===== CODEX FINAL RESPONSE =====` and `================================`, and append the trailing `Codex session id: <id>` and `Resume in terminal: codex resume <id>` lines (when present).
+  - **Light Antigravity formatting normalization ONLY** (preserve all technical content, facts, wording, and conclusions faithfully; do not summarize or add commentary):
+    - Ensure math formulas follow Antigravity KaTeX rules: convert `\(...\)` or malformed bare `(...)` containing LaTeX (such as `(3.7\times 10^{-17})`) into `$...$` inline math, convert `\[...\]` into `$$...$$` placed on its own lines for display math, and escape literal currency `$` in prose as `\$` (keep bare inside backticks).
+    - Ensure local absolute file links use the `file://` scheme (e.g. `[foo.py](file:///abs/path/foo.py#L10-L20)`).
+  - **Deliver to BOTH parent AND this subagent window**:
+    1. Send the formatted Codex output (including `Codex session id` and `Resume in terminal`) to your parent agent via `send_message`.
+    2. **Also output that exact same formatted Codex output directly as your final visible assistant message in this subagent window.** NEVER end with a placeholder like `"Sent Codex output verbatim to parent."` — the user wants to read the nicely rendered output directly in the subagent pane without having to expand `Messaged Parent Agent`.
 - When `run-codex.mjs` exits non-zero:
-  - Return the error output verbatim and stop.
+  - Send the error output verbatim to your parent via `send_message`, and also display the exact same error output directly in this subagent window, then stop.

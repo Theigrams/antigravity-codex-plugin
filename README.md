@@ -22,7 +22,7 @@ Instead of porting Claude Code's heavy daemon/broker stack, this plugin leans di
 antigravity-codex-plugin/
 ├── plugin.json             # Antigravity plugin manifest
 ├── assets/logo.svg         # Plugin icon
-├── agents/codex-worker.md  # Thin forwarding subagent (model: flash; tools: run_command, manage_task)
+├── agents/codex-worker.md  # Thin forwarding subagent (model: flash_lite; tools: run_command, manage_task)
 ├── scripts/run-codex.mjs   # Zero-dependency Node wrapper around codex exec / resume
 ├── skills/codex/SKILL.md   # Single /codex slash command
 └── rules/AGENTS.md         # Main-agent delegation, concurrency, resume, and result-handling rules
