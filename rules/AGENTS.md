@@ -17,8 +17,9 @@
 - **In-place resume**: To follow up on a Codex thread started earlier in this conversation, use `send_message` targeting that `codex-worker`'s existing `conversationId` instead of spawning a new subagent — it will automatically resume its own Codex session in the same UI card.
 - **Cross-conversation resume**: Pass `--resume <session-id>` to a new `codex-worker` when continuing a thread from an earlier conversation.
 
-## Result Boundaries
+## Result Handling
 
-- Relay `codex-worker` results faithfully, preserving exact file paths, line numbers, findings, uncertainties, and the `Codex session id` / `codex resume` command.
-- If Codex ran a read-only review or analysis, STOP after presenting its output; do not auto-apply fixes unless the user asks.
-- If Codex fails or cannot be invoked, report the error verbatim and stop rather than silently substituting your own implementation.
+- **Do not echo Codex's raw output verbatim to the user.** First thoroughly understand what `codex-worker` returned, then explain the findings, changes, or conclusions to the user in your own clear, human-readable words — you are free to choose what to emphasize and how to structure your explanation (the raw output stays available in the `codex-worker` Subagent UI card).
+- Keep technical facts, file paths, line numbers, and uncertainties accurate when referencing them.
+- If Codex ran a read-only review or analysis, do not auto-apply fixes unless the user asks.
+- If Codex fails or cannot be invoked, report the error honestly rather than silently substituting your own implementation without telling the user.

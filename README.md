@@ -9,7 +9,7 @@ Designed specifically for Antigravity's native strengths — **no app-server bro
 Instead of porting Claude Code's heavy daemon/broker stack, this plugin leans directly on Antigravity's native primitives:
 
 - **Native Subagent UI observability**: `codex-worker` streams `codex exec` output live into the Subagent UI card (reasoning summaries, shell commands, outputs, diffs, token usage) while keeping the main conversation clean.
-- **Lossless result relay**: Uses `codex exec -o <file>` to capture Codex's exact final answer and appends it together with the `Codex session id` at the end of output, so the subagent always relays the complete answer verbatim even on long runs.
+- **Clean separation between raw trace and user presentation**: `codex-worker` captures Codex's exact final answer via `codex exec -o <file>` (along with `Codex session id`) and passes it losslessly to the main agent; the main agent digests it and explains the outcome clearly in its own words instead of echoing dense raw Codex output verbatim, while the full raw output and trace remain inspectable inside the Subagent UI card.
 - **1 Subagent ⇄ 1 Codex Thread (Parallel & Resumable)**:
   - Spawn multiple `codex-worker` subagents in parallel in one main conversation — each runs an independent Codex thread in its own Subagent UI card.
   - Follow up on an existing thread via `send_message` to the idle `codex-worker` subagent — it automatically runs `codex exec resume <session-id>` inside the **same Subagent UI card**.

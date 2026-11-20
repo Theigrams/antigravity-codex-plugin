@@ -59,8 +59,10 @@ Selection rules:
 - Do NOT poll `manage_subagents` or sleep while `codex-worker` is running.
 - Let Antigravity notify you automatically via Reactive Wakeup when the subagent finishes (you may tell the user briefly which subagent(s) were launched so they can open the Subagent UI card to watch progress live).
 
-## Step 3: Present Result Verbatim
+## Step 3: Digest and Explain to the User
 
-- When `codex-worker` replies, present Codex's answer faithfully — preserving file paths, line numbers, findings, evidence boundaries, and the trailing `Codex session id` / `codex resume` command.
-- If the task was a read-only code review or analysis, **STOP after presenting the output** and do not modify files unless the user asks you to.
-- If Codex failed or exited with an error, report the error verbatim and do NOT silently substitute your own implementation unless the user asks you to take over.
+- **Do NOT echo or paste Codex's raw output verbatim to the user.** Codex's raw output is often dense and hard to read directly, and the user can already inspect the full raw output and trace inside the `codex-worker` Subagent UI card.
+- Instead, **thoroughly read and understand** what `codex-worker` returned, then explain the conclusions, key takeaways, or results to the user **in your own clear, natural words** — freely deciding what to highlight and how to organize your response for the current context.
+- Keep technical accuracy for any file paths, line numbers, facts, or uncertainties you reference (and include the `Codex session id` when resuming the thread might be useful).
+- If Codex ran a read-only review or analysis, do not auto-apply code fixes unless the user asks you to.
+- If Codex failed or exited with an error, report the failure honestly instead of pretending it succeeded or silently substituting your own work.
