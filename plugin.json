@@ -1,0 +1,17 @@
+{
+  "name": "codex",
+  "displayName": "Codex Worker",
+  "version": "1.0.0",
+  "description": "Delegate coding, debugging, and research tasks to your local OpenAI Codex CLI via the codex-worker subagent with live execution streaming, multi-subagent concurrency, and thread resume.",
+  "logo": "assets/logo.svg",
+  "author": {
+    "name": "Theigrams",
+    "url": "https://github.com/Theigrams"
+  },
+  "repository": "https://github.com/Theigrams/antigravity-codex-plugin",
+  "suggestedPrompts": [
+    "/codex investigate the failing test and propose the smallest safe fix",
+    "/codex --read-only review the uncommitted changes for bugs and edge cases",
+    "/codex --model gpt-6.1-terra --effort high explain how this module works"
+  ]
+}
