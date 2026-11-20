@@ -50,12 +50,14 @@ SCRIPT="$HOME/.gemini/config/plugins/codex/scripts/run-codex.mjs"
 
 3. **Flag Handling**:
    - `--cwd <dir>` / `-C <dir>`: always forward `--cwd "<dir>"` using the workspace path from the caller (or current working directory if omitted).
-   - `--model <model>` / `-m <model>`: pass through when specified; omit to use the default (`gpt-6.1-terra`). Supported options include:
-     - `gpt-6.2-sol` (alias `sol`, GPT-6.2 Sol)
-     - `gpt-6.2-astra` (alias `astra`, GPT-6.2 Astra)
-     - `gpt-6.1-terra` (alias `terra`, GPT-6.1 Terra — default)
-     - `gpt-6-luna` (alias `luna`, GPT-6 Luna)
-     - Any other explicit model ID passes through unchanged; pass `--model default` to defer to `~/.codex/config.toml`.
+   - `--model <model>` / `-m <model>`:
+     - If the caller explicitly specified a model or alias, pass it through unchanged (pass `--model default` to defer to `~/.codex/config.toml`).
+     - If the caller did NOT specify a model on a fresh run, pick intelligently from the task prompt alone (defaulting to **`gpt-6.2-sol`** for general tasks):
+       - **`gpt-6.2-sol`** (alias `sol`, **default**): Near-flagship intelligence (only slightly below Astra) and very cheap — use by default for almost all coding, debugging, review, and research tasks.
+       - **`gpt-6.2-astra`** (alias `astra`): Highest intelligence and most expensive — use only for the hardest architecture decisions, deep/subtle root-cause debugging, or high-stakes complex reasoning where top capability justifies the cost.
+       - **`gpt-6.1-terra`** (alias `terra`): Noticeably less intelligent than Sol and slightly cheaper, but **very fast** — use for straightforward, well-specified command execution, quick mechanical edits, or latency-sensitive routine instructions.
+       - **`gpt-6-luna`** (alias `luna`): Lowest intelligence and noticeably slower than Terra, but **negligible cost** — use only for simple, non-urgent background tasks where minimizing cost matters most and speed does not.
+     - Any other explicit model ID passes through unchanged.
    - `--effort <level>`: pass through only when specified (`low`, `medium`, `high`, `xhigh`, `max`, `ultra`).
    - Sandbox:
      - Fresh run: default to `--write` (`workspace-write`) unless the caller passed `--read-only` or explicitly requested read-only research/review/diagnosis without file edits (in which case pass `--read-only`).

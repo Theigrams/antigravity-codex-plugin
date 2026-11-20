@@ -12,6 +12,6 @@
   "suggestedPrompts": [
     "/codex investigate the failing test and propose the smallest safe fix",
     "/codex --read-only review the uncommitted changes for bugs and edge cases",
-    "/codex --model gpt-6.1-terra --effort high explain how this module works"
+    "/codex --model gpt-6.2-sol --effort high explain how this module works"
   ]
 }

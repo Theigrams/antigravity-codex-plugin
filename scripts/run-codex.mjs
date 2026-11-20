@@ -6,7 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import process from "node:process";
 
-const DEFAULT_MODEL = "gpt-6.1-terra";
+const DEFAULT_MODEL = "gpt-6.2-sol";
 const MODEL_ALIASES = new Map([
   ["sol", "gpt-6.2-sol"],
   ["gpt-6.2-sol", "gpt-6.2-sol"],
@@ -169,8 +169,7 @@ function parseCliArgs(argv) {
 
 function resolveModel(rawModel, isResume) {
   if (rawModel == null) {
-    // Default to gpt-6.1-terra for fresh runs; on resume, keep the explicit default
-    // unless overridden by CODEX_WORKER_DEFAULT_MODEL or --model default.
+    // Default to gpt-6.2-sol unless overridden by CODEX_WORKER_DEFAULT_MODEL or --model default.
     const envDefault = process.env.CODEX_WORKER_DEFAULT_MODEL;
     if (envDefault !== undefined) {
       const trimmed = envDefault.trim();

@@ -28,14 +28,16 @@ antigravity-codex-plugin/
 └── rules/AGENTS.md         # Main-agent delegation, concurrency, resume, and result-handling rules
 ```
 
-## Available Models
+## Available Models & Smart Selection
 
-| Display Name | Model ID | Alias | Notes |
+By default, tasks use **`gpt-6.2-sol`**, and the agent/subagent selects an appropriate tier when the task clearly calls for it (explicit `--model` always wins):
+
+| Display Name | Model ID | Alias | Positioning |
 | :--- | :--- | :--- | :--- |
-| **GPT-6.1 Terra** | `gpt-6.1-terra` | `terra` | Default (`CODEX_WORKER_DEFAULT_MODEL` overrides) |
-| **GPT-6.2 Sol** | `gpt-6.2-sol` | `sol` | — |
-| **GPT-6.2 Astra** | `gpt-6.2-astra` | `astra` | — |
-| **GPT-6 Luna** | `gpt-6-luna` | `luna` | Lightweight / fast |
+| **GPT-6.2 Astra** | `gpt-6.2-astra` | `astra` | Highest intelligence, most expensive — hardest architecture/debugging/high-stakes tasks |
+| **GPT-6.2 Sol** *(Default)* | `gpt-6.2-sol` | `sol` | Slightly below Astra in intelligence, very cheap — best general-purpose default (`CODEX_WORKER_DEFAULT_MODEL` overrides) |
+| **GPT-6.1 Terra** | `gpt-6.1-terra` | `terra` | Lower intelligence than Sol, slightly cheaper, **very fast** — straightforward command execution & quick edits |
+| **GPT-6 Luna** | `gpt-6-luna` | `luna` | Lowest intelligence, **negligible cost**, slower than Terra — simple, non-urgent cost-sensitive tasks |
 
 Any other explicit model ID is passed directly through to `codex exec -m <model>`. Pass `--model default` to defer to `~/.codex/config.toml`.
 
